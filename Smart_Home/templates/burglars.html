@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Burglars</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .image-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .image-item {
+            margin: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .image {
+            max-width: 300px;
+            max-height: 300px;
+        }
+        .image-name {
+            font-size: 14px;
+            color: #888;
+        }
+        .home-control-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .home-control-link {
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Burglars</h1>
+        <!-- "Go to Home Control" button -->
+        <div class="home-control-button">
+            <a class="home-control-link" href="/control">Go to Home Control</a>
+        </div>
+        <div class="image-list">
+            {% for image in images %}
+            <div class="image-item">
+                <img class="image" src="data:image/jpeg;base64,{{ image.data }}" alt="Burglar Image">
+                <p class="image-name">{{ image.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

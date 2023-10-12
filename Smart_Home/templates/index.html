@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Home Control</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .top-bar h1 {
+            margin: 0;
+        }
+        .logout-button {
+            padding: 10px 20px;
+            background-color: #FF5733; /* Red color for the logout button */
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .led-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .led-label {
+            font-size: 18px;
+            color: #333;
+        }
+        .led-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .dht-data {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .redirect-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top bar with "Logout" button -->
+        <div class="top-bar">
+            <h1>Smart Home Control Panel</h1>
+            <button class="logout-button" onclick="window.location.href='/logout'">Logout</button>
+        </div>
+        <div class="led-control">
+            <div class="led-label">LED 1</div>
+            <button class="led-button" id="led1-on">Turn On</button>
+            <button class="led-button" id="led1-off">Turn Off</button>
+        </div>
+        <div class="led-control">
+            <div class="led-label">LED 2</div>
+            <button class="led-button" id="led2-on">Turn On</button>
+            <button class="led-button" id="led2-off">Turn Off</button>
+        </div>
+        <!-- <div class="led-control">
+            <div class="led-label">LED 3</div>
+            <button class="led-button" id="led3-on">Turn On</button>
+            <button class="led-button" id="led3-off">Turn Off</button>
+        </div>
+        <div class="led-control">
+            <div class="led-label">LED 4</div>
+            <button class="led-button" id="led4-on">Turn On</button>
+            <button class="led-button" id="led4-off">Turn Off</button>
+        </div> -->
+        <div class="dht-data">
+            <h2>Current Temperature</h2>
+            <p id="temperature">Loading...</p>
+        </div>
+        <!-- Button to redirect to /burglars.html -->
+        <div class="redirect-button">
+            <button class="led-button" onclick="window.location.href='/burglars'">Go to Burglars</button>
+        </div>
+    </div>
+
+    <!-- JavaScript code for controlling LEDs and displaying DHT data -->
+    <script>
+        document.getElementById("led1-on").addEventListener("click", function() {
+            // Make a POST request to your Flask server
+            fetch("/turn_on_led1", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ action: "on" }) // You can send data to your server if needed
+            })
+
+            
+            .then(response => {
+                if (response.ok) {
+                    console.log("LED 1 turned on successfully");
+                } else {
+                    console.error("Failed to turn on LED 1");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+
+
+
+        document.getElementById("led1-off").addEventListener("click", function() {
+            // Make a POST request to your Flask server
+            fetch("/turn_off_led1", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ action: "on" }) // You can send data to your server if needed
+            })
+
+            
+            .then(response => {
+                if (response.ok) {
+                    console.log("LED 1 turned off successfully");
+                } else {
+                    console.error("Failed to turn off LED 1");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+
+
+        document.getElementById("led2-on").addEventListener("click", function() {
+            // Make a POST request to your Flask server
+            fetch("/turn_on_led2", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ action: "on" }) // You can send data to your server if needed
+            })
+
+            
+            .then(response => {
+                if (response.ok) {
+                    console.log("LED 2 turned on successfully");
+                } else {
+                    console.error("Failed to turn on LED 2");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+
+
+
+        document.getElementById("led2-off").addEventListener("click", function() {
+            // Make a POST request to your Flask server
+            fetch("/turn_off_led2", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ action: "on" }) // You can send data to your server if needed
+            })
+
+            
+            .then(response => {
+                if (response.ok) {
+                    console.log("LED 2 turned off successfully");
+                } else {
+                    console.error("Failed to turn off LED 2");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+
+        function updateTemperature() {
+            // Make a GET request to your Flask server to fetch temperature data
+            fetch("/get_temperature")
+                .then(response => response.json())
+                .then(data => {
+                    const temperatureElement = document.getElementById("temperature");
+                    if (data.hasOwnProperty("temperature")) {
+                        const temperatureValue = data.temperature.toFixed(2); // Format temperature value
+                        temperatureElement.textContent = `Temperature: ${temperatureValue} °C`;
+                    } else {
+                        temperatureElement.textContent = "Failed to fetch temperature data";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+
+        // Update temperature data every 5 seconds (adjust the interval as needed)
+        setInterval(updateTemperature, 5000);
+
+        // Initialize temperature on page load
+        updateTemperature();
+
+    </script>
+</body>
+</html>
